@@ -25,22 +25,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.newsapp.domain.model.Article
 
-/**
- * Premium Article Card Component
- *
- * A beautifully designed card that displays a single news article with:
- * - Large hero image with gradient overlay
- * - Source badge
- * - Title with elegant typography
- * - Author and time information
- * - Subtle shadow and elevation effects
- *
- * This component is used in both HomeScreen and FavoritesScreen for consistency.
- *
- * @param article The article data to display.
- * @param onItemClick Callback when the card is tapped.
- * @param modifier Optional modifier for customization.
- */
 @Composable
 fun ArticleItem(
     article: Article,
@@ -58,19 +42,15 @@ fun ArticleItem(
             )
             .clickable { onItemClick(article) },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column {
-            // Hero Image Section with Gradient Overlay
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                // Article Image
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(article.urlToImage)
@@ -83,23 +63,18 @@ fun ArticleItem(
                         .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
                 )
 
-                // Gradient Overlay for better text readability
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
                             brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    Color.Black.copy(alpha = 0.3f)
-                                ),
+                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.3f)),
                                 startY = 0f,
                                 endY = Float.POSITIVE_INFINITY
                             )
                         )
                 )
 
-                // Source Badge
                 article.sourceName?.let { source ->
                     Surface(
                         modifier = Modifier
@@ -120,13 +95,11 @@ fun ArticleItem(
                 }
             }
 
-            // Content Section
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Title
                 Text(
                     text = article.title ?: "No Title",
                     style = MaterialTheme.typography.titleMedium,
@@ -139,7 +112,6 @@ fun ArticleItem(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Description
                 Text(
                     text = article.description ?: "No description available",
                     style = MaterialTheme.typography.bodyMedium,
@@ -151,7 +123,6 @@ fun ArticleItem(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Divider
                 HorizontalDivider(
                     modifier = Modifier.fillMaxWidth(),
                     thickness = 1.dp,
@@ -160,13 +131,11 @@ fun ArticleItem(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Author and Time Row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Author
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.weight(1f)
@@ -187,10 +156,7 @@ fun ArticleItem(
                         )
                     }
 
-                    // Time
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.DateRange,
                             contentDescription = "Time",
@@ -210,25 +176,14 @@ fun ArticleItem(
     }
 }
 
-/**
- * Formats the date string to a more readable format.
- * Converts ISO date format to a simpler display format.
- *
- * @param dateString The ISO date string from the API.
- * @return A formatted date string or "Unknown" if parsing fails.
- */
 private fun formatDate(dateString: String?): String {
     if (dateString == null) return "Unknown"
 
     return try {
-        // Extract date part from ISO format (2024-01-15T10:30:00Z)
         val datePart = dateString.substringBefore("T")
         val parts = datePart.split("-")
         if (parts.size == 3) {
-            val months = listOf(
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-            )
+            val months = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
             val monthIndex = parts[1].toIntOrNull()?.minus(1) ?: 0
             val month = months.getOrElse(monthIndex) { "Unknown" }
             val day = parts[2].toIntOrNull() ?: 0
@@ -241,14 +196,6 @@ private fun formatDate(dateString: String?): String {
     }
 }
 
-/**
- * Compact Article Card for smaller displays or list variations.
- * Shows a horizontal layout with thumbnail and text.
- *
- * @param article The article data to display.
- * @param onItemClick Callback when the card is tapped.
- * @param modifier Optional modifier for customization.
- */
 @Composable
 fun ArticleItemCompact(
     article: Article,
@@ -261,9 +208,7 @@ fun ArticleItemCompact(
             .padding(horizontal = 16.dp, vertical = 6.dp)
             .clickable { onItemClick(article) },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -272,7 +217,6 @@ fun ArticleItemCompact(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Thumbnail
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(article.urlToImage)
@@ -287,11 +231,7 @@ fun ArticleItemCompact(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Content
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                // Source
+            Column(modifier = Modifier.weight(1f)) {
                 article.sourceName?.let { source ->
                     Text(
                         text = source.uppercase(),
@@ -304,7 +244,6 @@ fun ArticleItemCompact(
                     Spacer(modifier = Modifier.height(4.dp))
                 }
 
-                // Title
                 Text(
                     text = article.title ?: "No Title",
                     style = MaterialTheme.typography.bodyMedium,
@@ -316,7 +255,6 @@ fun ArticleItemCompact(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // Time
                 Text(
                     text = formatDate(article.publishedAt),
                     style = MaterialTheme.typography.labelSmall,

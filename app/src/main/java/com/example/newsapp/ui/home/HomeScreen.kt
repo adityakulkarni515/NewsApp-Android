@@ -29,22 +29,6 @@ import com.example.newsapp.ui.home.components.ShimmerLoading
 import com.example.newsapp.ui.navigation.Screen
 import com.example.newsapp.viewmodel.HomeViewModel
 
-/**
- * Premium Home Screen displaying top news headlines.
- *
- * Features:
- * - Gradient header with app branding
- * - Premium article cards with hero images
- * - Smooth loading animations
- * - Floating action button style favorites access
- *
- * This screen fetches news from the API and displays them in a beautifully
- * designed list with proper spacing between items.
- *
- * @param onArticleClick Callback when user taps an article (handles navigation).
- * @param navController Navigation controller for navigating to other screens.
- * @param viewModel The ViewModel that provides the news data (injected by Hilt).
- */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,25 +37,15 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    // Collect state from ViewModel
     val state by viewModel.state
 
-    // Define gradient colors for the header
     val headerGradient = Brush.horizontalGradient(
-        colors = listOf(
-            Color(0xFF6366f1),
-            Color(0xFF8b5cf6),
-            Color(0xFFa855f7)
-        )
+        colors = listOf(Color(0xFF6366f1), Color(0xFF8b5cf6), Color(0xFFa855f7))
     )
 
     Scaffold(
         topBar = {
-            // Custom gradient top app bar
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Transparent
-            ) {
+            Surface(modifier = Modifier.fillMaxWidth(), color = Color.Transparent) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -84,11 +58,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // App Branding
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Logo Icon
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
                                     .size(40.dp)
@@ -121,11 +91,8 @@ fun HomeScreen(
                             }
                         }
 
-                        // Favorites Button
                         FilledIconButton(
-                            onClick = {
-                                navController.navigate(Screen.FavoritesScreen.route)
-                            },
+                            onClick = { navController.navigate(Screen.FavoritesScreen.route) },
                             colors = IconButtonDefaults.filledIconButtonColors(
                                 containerColor = Color.White.copy(alpha = 0.2f)
                             ),
@@ -149,37 +116,20 @@ fun HomeScreen(
                 .padding(top = paddingValues.calculateTopPadding())
         ) {
             when {
-                // Loading State - Show shimmer animation
                 state.isLoading -> {
                     ShimmerLoading()
                 }
-
-                // Error State - Show error message
                 state.error != null -> {
-                    ErrorContent(
-                        error = state.error!!,
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    ErrorContent(error = state.error!!, modifier = Modifier.fillMaxSize())
                 }
-
-                // Success State - Show article list
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(
-                            top = 16.dp,
-                            bottom = 24.dp
-                        ),
+                        contentPadding = PaddingValues(top = 16.dp, bottom = 24.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(
-                            items = state.articles,
-                            key = { article -> article.url }
-                        ) { article ->
-                            ArticleItem(
-                                article = article,
-                                onItemClick = onArticleClick
-                            )
+                        items(items = state.articles, key = { article -> article.url }) { article ->
+                            ArticleItem(article = article, onItemClick = onArticleClick)
                         }
                     }
                 }
@@ -188,31 +138,15 @@ fun HomeScreen(
     }
 }
 
-/**
- * Error content displayed when news fetching fails.
- *
- * Shows a friendly error message with an icon.
- *
- * @param error The error message to display.
- * @param modifier Modifier for styling.
- */
 @Composable
-private fun ErrorContent(
-    error: String,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
+private fun ErrorContent(error: String, modifier: Modifier = Modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Card(
             modifier = Modifier
                 .padding(32.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer
-            )
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
         ) {
             Column(
                 modifier = Modifier
@@ -226,9 +160,7 @@ private fun ErrorContent(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Text(
                     text = error,
                     style = MaterialTheme.typography.bodyLarge,

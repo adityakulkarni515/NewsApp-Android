@@ -10,9 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
@@ -30,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
@@ -48,13 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.newsapp.ui.navigation.Screen
 import com.example.newsapp.viewmodel.LoginViewModel
-import kotlin.math.sin
-import kotlin.random.Random
 
-/**
- * Data class representing a floating icon with its properties.
- * Each floating icon has a position, size, icon, and animation parameters.
- */
 data class FloatingIcon(
     val icon: ImageVector,
     val initialX: Float,
@@ -66,30 +56,16 @@ data class FloatingIcon(
     val alpha: Float
 )
 
-/**
- * Premium Login Screen with floating animated icons and modern design.
- * Features:
- * - Gradient background
- * - Floating animated news-related icons
- * - Glass-morphism style login card
- * - Smooth animations
- *
- * @param navController The navigation controller for navigating to other screens.
- * @param viewModel The ViewModel associated with this screen, provided by Hilt.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    // Collect state from ViewModel
     val email by viewModel.email
     val password by viewModel.password
     val loginError by viewModel.loginError
 
-    // Define floating icons with their properties
-    // Using icons available in the standard Material Icons library
     val floatingIcons = remember {
         listOf(
             FloatingIcon(Icons.Outlined.MailOutline, 0.1f, 0.15f, 32.dp, 3000, 20f, 15f, 0.3f),
@@ -113,22 +89,20 @@ fun LoginScreen(
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        Color(0xFF1a1a2e),  // Dark navy
-                        Color(0xFF16213e),  // Deep blue
-                        Color(0xFF0f3460),  // Medium blue
-                        Color(0xFF1a1a2e)   // Dark navy
+                        Color(0xFF1a1a2e),
+                        Color(0xFF16213e),
+                        Color(0xFF0f3460),
+                        Color(0xFF1a1a2e)
                     ),
                     start = Offset(0f, 0f),
                     end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
                 )
             )
     ) {
-        // Floating Icons Layer
         floatingIcons.forEach { floatingIcon ->
             FloatingIconAnimation(floatingIcon)
         }
 
-        // Decorative gradient circles in background
         Box(
             modifier = Modifier
                 .size(300.dp)
@@ -162,7 +136,6 @@ fun LoginScreen(
                 )
         )
 
-        // Main Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -170,11 +143,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // App Icon with glow effect
-            Box(
-                contentAlignment = Alignment.Center
-            ) {
-                // Glow effect
+            Box(contentAlignment = Alignment.Center) {
                 Box(
                     modifier = Modifier
                         .size(100.dp)
@@ -184,16 +153,12 @@ fun LoginScreen(
                             shape = CircleShape
                         )
                 )
-                // Icon container
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .background(
                             brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF6366f1),
-                                    Color(0xFF8b5cf6)
-                                )
+                                colors = listOf(Color(0xFF6366f1), Color(0xFF8b5cf6))
                             ),
                             shape = CircleShape
                         ),
@@ -210,7 +175,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // App Title
             Text(
                 text = "NewsApp",
                 fontSize = 36.sp,
@@ -227,14 +191,10 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Login Card with glass morphism effect
             Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.1f)
-                )
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.1f))
             ) {
                 Column(
                     modifier = Modifier
@@ -256,7 +216,6 @@ fun LoginScreen(
                         modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
                     )
 
-                    // Email Field
                     OutlinedTextField(
                         value = email,
                         onValueChange = { viewModel.onEmailChange(it) },
@@ -283,7 +242,6 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Password Field
                     OutlinedTextField(
                         value = password,
                         onValueChange = { viewModel.onPasswordChange(it) },
@@ -311,7 +269,6 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    // Login Button with gradient
                     Button(
                         onClick = {
                             viewModel.onLoginClick {
@@ -324,9 +281,7 @@ fun LoginScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent
-                        ),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(0.dp)
                     ) {
                         Box(
@@ -368,13 +323,10 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Demo credentials hint
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.05f)
-                )
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.05f))
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -398,23 +350,15 @@ fun LoginScreen(
         }
     }
 
-    // Error Dialog
     loginError?.let { error ->
         AlertDialog(
             onDismissRequest = { viewModel.clearError() },
-            title = {
-                Text(
-                    "Login Failed",
-                    fontWeight = FontWeight.Bold
-                )
-            },
+            title = { Text("Login Failed", fontWeight = FontWeight.Bold) },
             text = { Text(error) },
             confirmButton = {
                 Button(
                     onClick = { viewModel.clearError() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6366f1)
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6366f1))
                 ) {
                     Text("OK")
                 }
@@ -426,60 +370,41 @@ fun LoginScreen(
     }
 }
 
-/**
- * Composable that animates a single floating icon.
- * The icon floats up and down, rotates slightly, and scales.
- */
 @Composable
 fun FloatingIconAnimation(floatingIcon: FloatingIcon) {
-    // Infinite transition for continuous animation
     val infiniteTransition = rememberInfiniteTransition(label = "floating")
 
-    // Vertical floating animation
     val offsetY by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = floatingIcon.floatRange,
         animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = floatingIcon.animationDuration,
-                easing = FastOutSlowInEasing
-            ),
+            animation = tween(durationMillis = floatingIcon.animationDuration, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "offsetY"
     )
 
-    // Rotation animation
     val rotation by infiniteTransition.animateFloat(
         initialValue = -floatingIcon.rotationRange,
         targetValue = floatingIcon.rotationRange,
         animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = (floatingIcon.animationDuration * 1.5).toInt(),
-                easing = FastOutSlowInEasing
-            ),
+            animation = tween(durationMillis = (floatingIcon.animationDuration * 1.5).toInt(), easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "rotation"
     )
 
-    // Scale pulsing animation
     val scale by infiniteTransition.animateFloat(
         initialValue = 0.9f,
         targetValue = 1.1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = (floatingIcon.animationDuration * 0.8).toInt(),
-                easing = FastOutSlowInEasing
-            ),
+            animation = tween(durationMillis = (floatingIcon.animationDuration * 0.8).toInt(), easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "scale"
     )
 
-    BoxWithConstraints(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         Icon(
             imageVector = floatingIcon.icon,
             contentDescription = null,

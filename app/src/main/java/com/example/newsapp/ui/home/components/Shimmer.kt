@@ -19,30 +19,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-/**
- * Premium Shimmer Loading Animation
- *
- * Displays a beautiful loading placeholder that matches the ArticleItem design.
- * Features:
- * - Smooth gradient animation
- * - Card-based layout matching actual content
- * - Multiple shimmer items for realistic preview
- *
- * This is shown while the news articles are being fetched from the API.
- */
 @Composable
 fun ShimmerLoading() {
-    // Define shimmer gradient colors
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.6f),
         Color.LightGray.copy(alpha = 0.2f),
         Color.LightGray.copy(alpha = 0.6f),
     )
 
-    // Infinite transition for continuous animation
     val transition = rememberInfiniteTransition(label = "shimmer")
 
-    // Animate the gradient position
     val translateAnim = transition.animateFloat(
         initialValue = 0f,
         targetValue = 1000f,
@@ -53,20 +39,15 @@ fun ShimmerLoading() {
         label = "Shimmer translation"
     )
 
-    // Create the animated gradient brush
     val brush = Brush.linearGradient(
         colors = shimmerColors,
         start = Offset.Zero,
         end = Offset(x = translateAnim.value, y = translateAnim.value)
     )
 
-    // Display shimmer items matching the premium ArticleItem design
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            top = 16.dp,
-            bottom = 24.dp
-        ),
+        contentPadding = PaddingValues(top = 16.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(4) {
@@ -75,18 +56,6 @@ fun ShimmerLoading() {
     }
 }
 
-/**
- * Shimmer placeholder matching the premium ArticleItem design.
- *
- * Creates a skeleton layout that matches:
- * - Hero image area
- * - Source badge
- * - Title placeholder
- * - Description placeholder
- * - Author and time row
- *
- * @param brush The animated gradient brush for shimmer effect.
- */
 @Composable
 fun ShimmerArticleItem(brush: Brush) {
     Card(
@@ -94,13 +63,10 @@ fun ShimmerArticleItem(brush: Brush) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column {
-            // Hero Image Placeholder
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,7 +74,6 @@ fun ShimmerArticleItem(brush: Brush) {
                     .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
                     .background(brush)
             ) {
-                // Source Badge Placeholder
                 Spacer(
                     modifier = Modifier
                         .padding(12.dp)
@@ -120,13 +85,11 @@ fun ShimmerArticleItem(brush: Brush) {
                 )
             }
 
-            // Content Section
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Title Placeholder (2 lines)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -147,7 +110,6 @@ fun ShimmerArticleItem(brush: Brush) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Description Placeholder (2 lines)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -168,7 +130,6 @@ fun ShimmerArticleItem(brush: Brush) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Divider
                 HorizontalDivider(
                     modifier = Modifier.fillMaxWidth(),
                     thickness = 1.dp,
@@ -177,16 +138,12 @@ fun ShimmerArticleItem(brush: Brush) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Author and Time Row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Author Placeholder
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(
                             modifier = Modifier
                                 .size(16.dp)
@@ -203,10 +160,7 @@ fun ShimmerArticleItem(brush: Brush) {
                         )
                     }
 
-                    // Time Placeholder
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(
                             modifier = Modifier
                                 .size(14.dp)
@@ -228,12 +182,6 @@ fun ShimmerArticleItem(brush: Brush) {
     }
 }
 
-/**
- * Compact shimmer item for smaller loading states.
- * Used in list variations or smaller content areas.
- *
- * @param brush The animated gradient brush for shimmer effect.
- */
 @Composable
 fun ShimmerItemCompact(brush: Brush) {
     Card(
@@ -241,9 +189,7 @@ fun ShimmerItemCompact(brush: Brush) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -252,7 +198,6 @@ fun ShimmerItemCompact(brush: Brush) {
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Thumbnail Placeholder
             Spacer(
                 modifier = Modifier
                     .size(80.dp)
@@ -262,11 +207,7 @@ fun ShimmerItemCompact(brush: Brush) {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Content Placeholder
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                // Source
+            Column(modifier = Modifier.weight(1f)) {
                 Spacer(
                     modifier = Modifier
                         .width(60.dp)
@@ -277,7 +218,6 @@ fun ShimmerItemCompact(brush: Brush) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Title (2 lines)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -298,7 +238,6 @@ fun ShimmerItemCompact(brush: Brush) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Time
                 Spacer(
                     modifier = Modifier
                         .width(50.dp)

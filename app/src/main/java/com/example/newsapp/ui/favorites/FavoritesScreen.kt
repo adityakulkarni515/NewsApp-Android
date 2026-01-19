@@ -30,21 +30,6 @@ import com.example.newsapp.ui.home.components.ArticleItem
 import com.example.newsapp.ui.navigation.Screen
 import com.example.newsapp.viewmodel.FavoritesViewModel
 
-/**
- * Premium Favorites Screen displaying saved articles.
- *
- * This screen shows all articles the user has saved as favorites.
- * It uses the same premium ArticleItem component as HomeScreen for consistency.
- *
- * Features:
- * - Gradient header matching HomeScreen style
- * - Same premium article cards
- * - Empty state with helpful message
- * - Real-time updates when favorites change
- *
- * @param navController The navigation controller for navigating to other screens.
- * @param viewModel The ViewModel for this screen, provided by Hilt dependency injection.
- */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,25 +37,15 @@ fun FavoritesScreen(
     navController: NavController,
     viewModel: FavoritesViewModel = hiltViewModel()
 ) {
-    // Collect state from ViewModel
     val state by viewModel.state
 
-    // Define gradient colors for the header (matching HomeScreen)
     val headerGradient = Brush.horizontalGradient(
-        colors = listOf(
-            Color(0xFF6366f1),
-            Color(0xFF8b5cf6),
-            Color(0xFFa855f7)
-        )
+        colors = listOf(Color(0xFF6366f1), Color(0xFF8b5cf6), Color(0xFFa855f7))
     )
 
     Scaffold(
         topBar = {
-            // Custom gradient top app bar (matching HomeScreen style)
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Transparent
-            ) {
+            Surface(modifier = Modifier.fillMaxWidth(), color = Color.Transparent) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -83,11 +58,7 @@ fun FavoritesScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Back Button and Title
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Back Button
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             FilledIconButton(
                                 onClick = { navController.navigateUp() },
                                 colors = IconButtonDefaults.filledIconButtonColors(
@@ -119,7 +90,6 @@ fun FavoritesScreen(
                             }
                         }
 
-                        // Favorites Icon
                         Box(
                             modifier = Modifier
                                 .size(44.dp)
@@ -145,32 +115,18 @@ fun FavoritesScreen(
                 .padding(top = paddingValues.calculateTopPadding())
         ) {
             if (state.articles.isEmpty()) {
-                // Empty State - No favorites saved yet
-                EmptyFavoritesContent(
-                    modifier = Modifier.fillMaxSize()
-                )
+                EmptyFavoritesContent(modifier = Modifier.fillMaxSize())
             } else {
-                // Favorites List - Same styling as HomeScreen
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        top = 16.dp,
-                        bottom = 24.dp
-                    ),
+                    contentPadding = PaddingValues(top = 16.dp, bottom = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(
-                        items = state.articles,
-                        key = { article -> article.url }
-                    ) { article ->
+                    items(items = state.articles, key = { article -> article.url }) { article ->
                         ArticleItem(
                             article = article,
                             onItemClick = { clickedArticle ->
-                                // Store article in savedStateHandle and navigate to detail
-                                navController.currentBackStackEntry?.savedStateHandle?.set(
-                                    "article",
-                                    clickedArticle
-                                )
+                                navController.currentBackStackEntry?.savedStateHandle?.set("article", clickedArticle)
                                 navController.navigate(Screen.DetailScreen.route)
                             }
                         )
@@ -181,21 +137,9 @@ fun FavoritesScreen(
     }
 }
 
-/**
- * Empty state content when no favorites are saved.
- *
- * Displays a friendly message encouraging users to save articles.
- *
- * @param modifier Modifier for styling.
- */
 @Composable
-private fun EmptyFavoritesContent(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
+private fun EmptyFavoritesContent(modifier: Modifier = Modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Card(
             modifier = Modifier
                 .padding(32.dp)
@@ -211,7 +155,6 @@ private fun EmptyFavoritesContent(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Icon
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -255,7 +198,6 @@ private fun EmptyFavoritesContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Hint with heart icon
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center

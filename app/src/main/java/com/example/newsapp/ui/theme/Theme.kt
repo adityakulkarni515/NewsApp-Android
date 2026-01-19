@@ -11,10 +11,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-/**
- * Defines the dark color scheme for the application's theme.
- * These colors are used when the device is in dark mode.
- */
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
@@ -44,10 +40,6 @@ private val DarkColorScheme = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
-/**
- * Defines the light color scheme for the application's theme.
- * These colors are used when the device is in light mode.
- */
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -77,40 +69,25 @@ private val LightColorScheme = lightColorScheme(
     inversePrimary = md_theme_light_inversePrimary,
 )
 
-/**
- * The main theme for the NewsApp.
- * This Composable function applies the appropriate color scheme (light or dark)
- * and typography to its content.
- *
- * @param darkTheme Whether the theme should be dark or light. Defaults to the system setting.
- * @param content The content to which the theme will be applied.
- */
 @Composable
 fun NewsAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    // Selects the color scheme based on whether dark theme is enabled.
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
-    // Gets the current view, which is needed to control the system bars.
     val view = LocalView.current
     if (!view.isInEditMode) {
-        // A SideEffect runs after every recomposition.
         SideEffect {
-            // Gets the window associated with the current view.
             val window = (view.context as Activity).window
-            // Sets the status bar color to the primary color from the scheme.
             window.statusBarColor = colorScheme.primary.toArgb()
-            // Sets the appearance of the status bar icons (light or dark).
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 
-    // Applies the MaterialTheme to the content.
     MaterialTheme(
-        colorScheme = colorScheme, // Sets the color scheme.
-        typography = Typography, // Sets the typography.
-        content = content // The Composable content to be themed.
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
     )
 }
