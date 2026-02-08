@@ -43,7 +43,8 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         "sandeep@icici.com" to "password",
         "omkar@icici.com" to "password",
         "aditya@icici.com" to "password",
-        "swati@icici.com" to "password"
+        "swati@icici.com" to "password",
+        "diwakar@icici.com" to "password"
     )
 
     /**
