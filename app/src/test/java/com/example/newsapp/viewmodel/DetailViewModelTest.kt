@@ -63,6 +63,8 @@ class DetailViewModelTest {
             deleteArticleUseCase,
             checkFavoriteStatusUseCase
         )
+        // Initialize the article in the ViewModel
+        detailViewModel.initArticle(article)
         // Advance the dispatcher to ensure the init block's checkFavoriteStatus completes
         advanceUntilIdle()
     }
@@ -133,6 +135,8 @@ class DetailViewModelTest {
             deleteArticleUseCase,
             checkFavoriteStatusUseCase
         )
+        // Initialize the article in the ViewModel
+        detailViewModel.initArticle(testArticle)
         advanceUntilIdle() // Process initial flow emission
 
         assertThat(detailViewModel.state.value.isFavorite).isEqualTo(initialIsFavorite)
